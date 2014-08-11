@@ -554,11 +554,7 @@ class Packager(object):
                     os_filename = StringIO(image_data)
                 else:
                     from io import BytesIO
-                    try:
-                        os_filename = BytesIO(image_data)
-                    except:
-                        os_filename = BytesIO(bytes(image_data))
-
+                    os_filename = BytesIO(image_data)
 
                 self.filenames.append((os_filename, xml_image_name, True))
                 try:
