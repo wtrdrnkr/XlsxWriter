@@ -541,18 +541,30 @@ class Packager(object):
                 copy(filename, os_filename)
             else:
                 # For in-memory mode we read the image into a string.
-                image_file = open(filename, mode='rb')
-                image_data = image_file.read()
-
+                try:
+                    image_file = open(filename, mode='rb')
+                    image_data = image_file.read()
+                except:
+                    if image[0].__class__.__name__ == 'StringIO':
+                        image_data = image[0].getvalue()
+                    else:
+                        image_data = image[0]
+                
                 if sys.version_info < (2, 6, 0):
                     os_filename = StringIO(image_data)
                 else:
                     from io import BytesIO
-                    os_filename = BytesIO(image_data)
+                    try:
+                        os_filename = BytesIO(image_data)
+                    except:
+                        os_filename = BytesIO(bytes(image_data))
+
 
                 self.filenames.append((os_filename, xml_image_name, True))
-                image_file.close()
-
+                try:
+                    image_file.close()
+                except:
+                    pass
             index += 1
 
     def _add_vba_project(self):

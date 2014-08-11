@@ -925,7 +925,11 @@ class Workbook(xmlwriter.XMLwriter):
         # Store image data to copy it into file container.
         self.images.append([filename, image_type])
 
-        fh.close()
+        try:
+            fh.close()
+        except:
+            pass
+            
         return image_type, width, height, image_name
 
     def _process_png(self, data):
